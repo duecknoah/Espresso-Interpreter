@@ -1,0 +1,3 @@
+x = 24
+read y
+print x + ( -y )

@@ -1,0 +1,5 @@
+read x
+y = 3
+z = x * x + y * y
+print z
+print ( z + x ) / 2
