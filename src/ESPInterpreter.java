@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class ESPInterpreter {
 	private Variable [] variable_table;
@@ -27,12 +32,54 @@ public class ESPInterpreter {
 		
 		
 	}
+
+	// Executes the given file
+	public void execute(File f) {
+		// Attempt to open the file
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new FileReader(f));	
+
+			// Go through line by line, check for errors
+			String line;
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+			}
+			
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("The file " + f + " doesn't exist.");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			// Prevent resource leaks by closing the BufferedReader
+			// if it is open
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Returns true if the given char 'v' exists
+	 * in the variable table
+	 */
+	public boolean existsInVariableTable(char v) {
+		if ()
+	}
 	
 	public static void main( String [ ] args ) {
 		// args[0] will be the name of input file, for example text.esp
-		System.out.println("The input file is" + args[0]);
-		ESPInterpreter sample = new ESPInterpreter();
-		sample.ShowHowToUseVariableClass();
+		System.out.println("The input file is " + args[0]);
+		ESPInterpreter interp = new ESPInterpreter();
+		interp.execute(new File(args[0]));
+		System.out.println("Done.");
 	}
 
 }
