@@ -63,6 +63,11 @@ public class ESPInterpreter {
 			return;
 		}
 
+		int lineNum = 0;
+		while (lineNum < program.length) {
+			System.out.println(program[lineNum]);
+			lineNum ++;
+		}
 	}
 	
 	public static void main( String [ ] args ) {
