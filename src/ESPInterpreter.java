@@ -63,10 +63,17 @@ public class ESPInterpreter {
 			return;
 		}
 
-		int lineNum = 0;
-		while (lineNum < program.length) {
-			System.out.println(program[lineNum]);
-			lineNum ++;
+		try {
+			int lineNum = 0;
+			while (lineNum < program.length) {
+				System.out.println(program[lineNum]);
+				ESPStatement lineType = ESPStatement.getType(program[lineNum]);
+
+				lineNum ++;
+			}
+		}
+		catch (ESPException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -75,7 +82,7 @@ public class ESPInterpreter {
 		System.out.println("The input file is " + args[0]);
 		ESPInterpreter interp = new ESPInterpreter();
 
-		System.out.println(Expression.convertToPostFix("x % 2"));
+		//System.out.println(Expression.convertToPostFix("x % 2"));
 		interp.load(new File(args[0]));
 		interp.execute();
 		System.out.println("Done.");
