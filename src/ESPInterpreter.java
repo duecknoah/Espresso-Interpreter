@@ -1,17 +1,20 @@
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.stream.Stream;
 
 public class ESPInterpreter {
 	private Variable [] variable_table;
+	private ESPErrorHandler error_handler;
+	private String[] program;
 	
-	public ESPInterpreter() { //This is just an example, not a complete constructor
+	public ESPInterpreter() {
 		variable_table = new Variable['z'];
 		for (int i = 0; i < 'z'; i++) {
 			variable_table[ i ] = new Variable();
 		}
+		error_handler = new ESPErrorHandler();
 	}
 	
 	/*
@@ -26,26 +29,18 @@ public class ESPInterpreter {
 		try {
 			int value = variable_table[c].getValue();
 			System.out.println("variable " +c +" is: " + value);
-		} catch (UndefinedVariableException E) {
+		} catch (UndefinedVariableException e) {
 			System.out.println("error: variable " +c +" is not defined.");
 		}
-		
-		
 	}
 
-	// Executes the given file
-	public void execute(File f) {
+	// Loads the given file into the interpreter
+	public void load(File f) {
 		// Attempt to open the file
-		BufferedReader in = null;
+		Stream<String> stream_data = null;
 		try {
-			in = new BufferedReader(new FileReader(f));	
-
-			// Go through line by line, check for errors
-			String line;
-			while ((line = in.readLine()) != null) {
-				System.out.println(line);
-			}
-			
+			stream_data = Files.lines(f.toPath());
+			program = stream_data.toArray(String[]::new);
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("The file " + f + " doesn't exist.");
@@ -56,29 +51,28 @@ public class ESPInterpreter {
 		finally {
 			// Prevent resource leaks by closing the BufferedReader
 			// if it is open
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			if (stream_data != null)
+				stream_data.close();
 		}
 	}
 
-	/**
-	 * Returns true if the given char 'v' exists
-	 * in the variable table
-	 */
-	public boolean existsInVariableTable(char v) {
-		if ()
+	// Executes the loaded program
+	public void execute() {
+		if (program == null) {
+			System.out.println("No program loaded.");
+			return;
+		}
+
 	}
 	
 	public static void main( String [ ] args ) {
 		// args[0] will be the name of input file, for example text.esp
 		System.out.println("The input file is " + args[0]);
 		ESPInterpreter interp = new ESPInterpreter();
-		interp.execute(new File(args[0]));
+
+		System.out.println(Expression.convertToPostFix("x % 2"));
+		interp.load(new File(args[0]));
+		interp.execute();
 		System.out.println("Done.");
 	}
 

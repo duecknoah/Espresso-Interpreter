@@ -1,4 +1,3 @@
-
 public class Variable {
     private int value;
     private boolean initialized;
@@ -10,7 +9,7 @@ public class Variable {
           this.value = v;
           this.initialized = true;
     }
-    public int getValue() throws UndefinedVariableException{
+    public int getValue() throws UndefinedVariableException {
           if (!initialized)
                 throw new UndefinedVariableException();
           else
