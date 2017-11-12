@@ -2,12 +2,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class ESPInterpreter {
 	private Variable [] variable_table;
 	private ESPErrorHandler error_handler;
 	private String[] program;
+	private Scanner userInput;
 	
 	public ESPInterpreter() {
 		variable_table = new Variable['z'];
@@ -15,6 +17,7 @@ public class ESPInterpreter {
 			variable_table[ i ] = new Variable();
 		}
 		error_handler = new ESPErrorHandler();
+		userInput = new Scanner(System.in);
 	}
 	
 	/*
@@ -66,14 +69,48 @@ public class ESPInterpreter {
 		try {
 			int lineNum = 0;
 			while (lineNum < program.length) {
-				System.out.println(program[lineNum]);
-				ESPStatement lineType = ESPStatement.getType(program[lineNum]);
+				String line = program[lineNum];
+				System.out.println(line);
+				ESPStatement lineType = ESPStatement.getType(line);
+
+				switch(lineType) {
+				case INPUT:
+					inputInteger(line.charAt(5));
+				break;
+				}
 
 				lineNum ++;
 			}
 		}
 		catch (ESPException e) {
 			e.printStackTrace();
+		}
+		finally {
+			userInput.close();
+		}
+	}
+
+	// Gets user input and sets it to the specified index in the variable table
+	private void inputInteger(int varIndex) throws VariableNameException {
+		if (varIndex < 0 || varIndex > variable_table.length)
+			throw new ArrayIndexOutOfBoundsException("Variable table index out of bounds: " + varIndex);
+		
+		Variable v = variable_table[varIndex];
+		boolean isValid = false;
+		System.out.println("Enter an integer number for variable: ");
+
+		// Loop until user entered a valid integer
+		while (!isValid) {
+			if (userInput.hasNextInt()) {
+				int val = userInput.nextInt();
+				v.setValue(val);
+				isValid = true;
+			}
+			else {
+				// Clear input
+				userInput.nextLine();
+				System.out.println("Please enter a valid integer number: ");
+			}
 		}
 	}
 	
