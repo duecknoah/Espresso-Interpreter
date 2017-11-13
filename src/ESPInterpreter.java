@@ -77,6 +77,9 @@ public class ESPInterpreter {
 				case INPUT:
 					inputInteger(line.charAt(5));
 				break;
+				case ASSIGNMENT:
+					
+				break;
 				}
 
 				lineNum ++;
@@ -114,12 +117,18 @@ public class ESPInterpreter {
 		}
 	}
 	
+	/**
+	 * Gets the value of a variable in the variable table
+	 */
+	public int getValueOf(char variable) throws UndefinedVariableException, VariableNameException {
+		return variable_table[variable].getValue();
+	}
+
 	public static void main( String [ ] args ) {
 		// args[0] will be the name of input file, for example text.esp
 		System.out.println("The input file is " + args[0]);
 		ESPInterpreter interp = new ESPInterpreter();
 
-		//System.out.println(Expression.convertToPostFix("x % 2"));
 		interp.load(new File(args[0]));
 		interp.execute();
 		System.out.println("Done.");
