@@ -75,10 +75,18 @@ public class ESPInterpreter {
 
 				switch(lineType) {
 				case INPUT:
+					// Allow user to input an integer and assign its value
+					// to the desired variable
 					inputInteger(line.charAt(5));
 				break;
 				case ASSIGNMENT:
-					
+					// ex. x = 5 * 2
+					// assign the evaluation of a infix expression to the variable v
+					Variable v = variable_table[line.charAt(0)];
+					String postfix = Expression.convertToPostFix(line.substring(4));
+					int result = Expression.evalPostfix(postfix, variable_table);
+					v.setValue(result);
+					System.out.println(result);
 				break;
 				}
 

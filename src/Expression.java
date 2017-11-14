@@ -62,8 +62,6 @@ public final class Expression {
 
         while (i < expressionAsArray.length) {
             char e = expressionAsArray[i];
-            System.out.println(e + " output = " + output);
-            System.out.println(stack);
             // Append to output string if e is an operand
             if (isOperand(e)) {
                 // Keep concatinating if its a number, as numbers may have
@@ -143,10 +141,73 @@ public final class Expression {
         return output.trim();
     }
 
+    /**
+     * Evaluates a postfix expression and returns its result as an integer value
+     * @return result (int)
+     */
+    public static int evalPostfix(String postfix, Variable[] variable_table) throws UndefinedVariableException, OperatorException {
+        String[] postfixAsArray = postfix.split(" ");
+        Stack<Integer> stack = new Stack<Integer>();
+
+        // Loop through tokens in postfix expression
+        for (String e : postfixAsArray) {
+            char eFirstChar = e.charAt(0);
+
+            // If a number
+            if (isInteger(eFirstChar)) {
+                stack.push(Integer.valueOf(e));
+            }
+            else if (isLetter(eFirstChar)) {
+                // Evaluate variable value
+                stack.push(variable_table[eFirstChar].getValue());
+            }
+            else if (isOperator(eFirstChar)) {
+                if (stack.size() < 2)
+                    throw new OperatorException("No unary operator is allowed");
+                int val2 = stack.pop();
+                int val1 = stack.pop();
+                stack.push(evaluate(val1, val2, eFirstChar));
+            }
+        }
+        if (stack.size() > 1)
+            throw new OperatorException("Missing operator(s), too many operands.");
+
+        return stack.get(0);
+    }
+
+    /**
+     * Returns the evalution of 'val1' and 'val2' based of the operator
+     * ex: 
+     * val1=5 val2=5 operator='+'
+     * would return 10
+     * 
+     * Valid operators
+     * + addition
+     * - subtraction
+     * * multiplication
+     * / division
+     */
+    public static int evaluate(int val1, int val2, char operator) throws OperatorException {
+        switch(operator) {
+        case '+':
+            return val1 + val2;
+        case '-':
+            return val1 - val2;
+        case '*':
+            return val1 * val2;
+        case '/':
+            return val1 / val2;
+        default:
+            throw new OperatorException("Invalid operator: " + operator);
+        }
+    }
+    
+
     public static void main(String[] args) {
         // Valid expressions
         try {
-            System.out.println(Expression.convertToPostFix("( ( ( ( 5 ) * 2 ) ) )"));
+            String test = Expression.convertToPostFix("5 + 5 5 5");
+            System.out.println("THE ANSWER IS: " + Expression.evalPostfix(test, null));
             System.out.println(Expression.convertToPostFix("1 * ( 2 + 3 / ( 4 ) )"));
             System.out.println(Expression.convertToPostFix("Y"));
             System.out.println(Expression.convertToPostFix("X + 2 * y"));
