@@ -7,8 +7,9 @@ import java.util.stream.Stream;
 
 public class ESPInterpreter {
 	private Variable [] variable_table;
-	private ESPErrorHandler error_handler;
+	private ErrorHandler error_handler;
 	private String[] program;
+	private String programName;
 	private Scanner userInput;
 	
 	public ESPInterpreter() {
@@ -16,8 +17,26 @@ public class ESPInterpreter {
 		for (int i = 0; i < 'z'; i++) {
 			variable_table[ i ] = new Variable();
 		}
-		error_handler = new ESPErrorHandler();
+		error_handler = new ErrorHandler();
 		userInput = new Scanner(System.in);
+		programName = null;
+	}
+
+	// The error handler for the interpreter.
+	// A inner class is used here as we need access
+	// to many of the private variables of the interpreter
+	public class ErrorHandler {
+		/**
+		 * Outputs the error of the line
+		 * in a human readable form
+		 */
+		public void outputErr(int lineNum, ESPException e) {
+			System.out.println(e.getClass().getName() 
+			+ " in " + programName + ": \n" 
+			+ e.getMessage() + '\n'
+			+ "\tLine " + (lineNum + 1) + ":\n"
+			+ '\t' + program[lineNum]);
+		}
 	}
 	
 	/*
@@ -44,6 +63,7 @@ public class ESPInterpreter {
 		try {
 			stream_data = Files.lines(f.toPath());
 			program = stream_data.toArray(String[]::new);
+			programName = f.getName();
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("The file " + f + " doesn't exist.");
@@ -66,8 +86,8 @@ public class ESPInterpreter {
 			return;
 		}
 
+		int lineNum = 0;
 		try {
-			int lineNum = 0;
 			while (lineNum < program.length) {
 				String line = program[lineNum];
 				ESPStatement lineType = ESPStatement.getType(line);
@@ -102,7 +122,8 @@ public class ESPInterpreter {
 			}
 		}
 		catch (ESPException e) {
-			e.printStackTrace();
+			// Pass any ESP error to the error handler
+			error_handler.outputErr(lineNum, e);
 		}
 		finally {
 			userInput.close();
