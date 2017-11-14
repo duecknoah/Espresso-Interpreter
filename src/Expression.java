@@ -159,7 +159,12 @@ public final class Expression {
             }
             else if (isLetter(eFirstChar)) {
                 // Evaluate variable value
-                stack.push(variable_table[eFirstChar].getValue());
+                try {
+                    stack.push(variable_table[eFirstChar].getValue());
+                }
+                catch (UndefinedVariableException e2) {
+                    throw new UndefinedVariableException("Variable " + eFirstChar + " is not defined.");
+                }
             }
             else if (isOperator(eFirstChar)) {
                 if (stack.size() < 2)
