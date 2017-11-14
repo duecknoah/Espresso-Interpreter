@@ -54,7 +54,7 @@ public final class Expression {
      * Converts the given prefix expression to postfix
      * @return a postfix expression of type String
      */
-    public static String convertToPostFix(String expression) throws VariableNameException, InvalidTokenException {
+    public static String convertToPostFix(String expression) throws VariableNameException, InvalidTokenException, ParenthesesException {
         Stack<Character> stack = new Stack<Character>();
         char[] expressionAsArray = expression.toCharArray();
         String output = "";
@@ -112,6 +112,8 @@ public final class Expression {
              * string until you see matched “(” (NOTE: you should also pop “(” )
             */
             while (e == ')') {
+                if (stack.isEmpty())
+                    throw new ParenthesesException("Unbalanced parentheses: Too many closing parenthesis.");
                 boolean isOpenBracket = (stack.peek() == '(');
                 if (!isOpenBracket)
                     output += stack.pop() + " ";
@@ -131,8 +133,11 @@ public final class Expression {
         }
 
         // Lastly, pop all operators and append them to the output
-        while (!stack.isEmpty())
+        while (!stack.isEmpty()) {
+            if (stack.peek() == '(')
+                throw new ParenthesesException("Unbalanced parentheses: Too many opening parenthesis.");
             output += stack.pop() + " ";
+        }
 
         // Return output (and get rid of any extra spaces)
         return output.trim();
@@ -141,6 +146,8 @@ public final class Expression {
     public static void main(String[] args) {
         // Valid expressions
         try {
+            System.out.println(Expression.convertToPostFix("( ( ( ( 5 ) * 2 ) ) )"));
+            System.out.println(Expression.convertToPostFix("1 * ( 2 + 3 / ( 4 ) )"));
             System.out.println(Expression.convertToPostFix("Y"));
             System.out.println(Expression.convertToPostFix("X + 2 * y"));
             System.out.println(Expression.convertToPostFix("( 0 - 45 )"));
