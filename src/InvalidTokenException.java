@@ -1,5 +1,5 @@
 // An exception thrown when an invalid token is detected
-public class InvalidTokenException extends ESPException {
+public class InvalidTokenException extends InvalidSyntaxException{
     // Parameterless Constructor
     public InvalidTokenException() {}
     

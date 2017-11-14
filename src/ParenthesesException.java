@@ -1,5 +1,5 @@
 // An exception thrown when there is unbalanced parentheses
-public class ParenthesesException extends ESPException {
+public class ParenthesesException extends InvalidSyntaxException {
     // Parameterless Constructor
     public ParenthesesException() {}
     

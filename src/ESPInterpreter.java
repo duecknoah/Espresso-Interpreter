@@ -13,8 +13,8 @@ public class ESPInterpreter {
 	private Scanner userInput;
 	
 	public ESPInterpreter() {
-		variable_table = new Variable['z'];
-		for (int i = 0; i < 'z'; i++) {
+		variable_table = new Variable['z' + 1];
+		for (int i = 0; i <= 'z'; i++) {
 			variable_table[ i ] = new Variable();
 		}
 		error_handler = new ErrorHandler();
@@ -31,11 +31,13 @@ public class ESPInterpreter {
 		 * in a human readable form
 		 */
 		public void outputErr(int lineNum, ESPException e) {
-			System.out.println(e.getClass().getName() 
-			+ " in " + programName + ": \n" 
-			+ e.getMessage() + '\n'
-			+ "\tLine " + (lineNum + 1) + ":\n"
-			+ '\t' + program[lineNum]);
+			boolean isSyntaxError = e instanceof InvalidSyntaxException;
+
+			System.out.println("Line " + (lineNum + 1) + ": "
+			+ program[lineNum] + '\n'
+			+ ((isSyntaxError) ? "Syntax error: " : "") 
+			+ e.getClass().getName() + ": " + e.getMessage()
+			);
 		}
 	}
 	

@@ -10,7 +10,7 @@ public final class Expression {
     /** 
      * Checks if e is an operator
      * @return true if e is an operator, false otherwise
-     * valid operators: + - * / %
+     * valid operators: + - * /
      */
     private static boolean isOperator(char e) {
         return (e == '+' || e == '-' || e == '*' || e == '/');
@@ -145,7 +145,7 @@ public final class Expression {
      * Evaluates a postfix expression and returns its result as an integer value
      * @return result (int)
      */
-    public static int evalPostfix(String postfix, Variable[] variable_table) throws UndefinedVariableException, OperatorException {
+    public static int evalPostfix(String postfix, Variable[] variable_table) throws UndefinedVariableException, OperatorException, InvalidSyntaxException {
         String[] postfixAsArray = postfix.split(" ");
         Stack<Integer> stack = new Stack<Integer>();
 
@@ -168,14 +168,17 @@ public final class Expression {
             }
             else if (isOperator(eFirstChar)) {
                 if (stack.size() < 2)
-                    throw new OperatorException("No unary operator is allowed");
+                    throw new OperatorException("Syntax error.");
                 int val2 = stack.pop();
                 int val1 = stack.pop();
                 stack.push(evaluate(val1, val2, eFirstChar));
             }
+            else {
+                throw new InvalidSyntaxException("Syntax error.");
+            }
         }
         if (stack.size() > 1)
-            throw new OperatorException("Missing operator(s), too many operands.");
+            throw new OperatorException("Missing, too many, or unknown operator(s)");
 
         return stack.get(0);
     }

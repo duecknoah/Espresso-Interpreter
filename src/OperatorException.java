@@ -1,5 +1,5 @@
 // An exception thrown when an invalid operator is used
-public class OperatorException extends ESPException {
+public class OperatorException extends InvalidSyntaxException {
     // Parameterless Constructor
     public OperatorException() {}
     
