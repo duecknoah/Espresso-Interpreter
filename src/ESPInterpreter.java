@@ -70,24 +70,32 @@ public class ESPInterpreter {
 			int lineNum = 0;
 			while (lineNum < program.length) {
 				String line = program[lineNum];
-				System.out.println(line);
 				ESPStatement lineType = ESPStatement.getType(line);
 
 				switch(lineType) {
-				case INPUT:
+				case INPUT: {
 					// Allow user to input an integer and assign its value
 					// to the desired variable
 					inputInteger(line.charAt(5));
-				break;
-				case ASSIGNMENT:
+					break;
+				}
+				case ASSIGNMENT: {
 					// ex. x = 5 * 2
 					// assign the evaluation of a infix expression to the variable v
 					Variable v = variable_table[line.charAt(0)];
 					String postfix = Expression.convertToPostFix(line.substring(4));
 					int result = Expression.evalPostfix(postfix, variable_table);
 					v.setValue(result);
+					break;
+				}
+				case OUTPUT: {
+					// ex. print x
+					// outputs the infix expression to the screen
+					String postfix = Expression.convertToPostFix(line.substring(6));
+					int result = Expression.evalPostfix(postfix, variable_table);
 					System.out.println(result);
-				break;
+					break;
+				}
 				}
 
 				lineNum ++;
