@@ -276,10 +276,6 @@ public final class Expression {
         };
         char comp = statement.charAt(compIndex);
 
-        System.out.println(expressions[0]);
-        System.out.println(expressions[1]);
-        System.out.println(comp);
-
         // Evaluate
         expressions[0] = Expression.convertToPostFix(expressions[0]);
         expressions[1] = Expression.convertToPostFix(expressions[1]);

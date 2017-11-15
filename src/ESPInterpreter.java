@@ -89,10 +89,33 @@ public class ESPInterpreter {
 		}
 
 		int lineNum = 0;
+		int interpDepth = 0; // the depth the interpreter is in the code (ex. a line with a tab is depth of 1)
 		try {
 			while (lineNum < program.length) {
 				String line = program[lineNum];
-				ESPStatement lineType = ESPStatement.getType(line);
+				ESPStatement lineType;
+				int lineDepth = 0;
+				// Calculate depth of line
+				for (int i = 0; i < line.length(); i ++) {
+					if (line.charAt(i) != ' ')
+						break;
+					lineDepth ++;
+				}
+
+				// If this line is lower depth than the interpreter,
+				// than we must be out of our current code block now
+				// so set our depth to the lines current depth
+				if (interpDepth > lineDepth)
+					interpDepth = lineDepth;
+				else if (interpDepth < lineDepth) {
+				// Else if the line number is deeper than our interpreters
+				// depth, than we are not in that code block, so don't read it
+					lineNum ++;
+					continue;
+				}
+
+				line = line.substring(interpDepth);
+				lineType = ESPStatement.getType(line);
 
 				switch(lineType) {
 				case INPUT: {
@@ -123,7 +146,9 @@ public class ESPInterpreter {
 					// runs the statements inside the if statement (lines that are tabbed in)
 					String statement = line.substring(3);
 					boolean result = Expression.evalInfixComparison(statement, variable_table);
-					System.out.println(result);
+					// If the IF statement came out to be true, go inside that code block
+					if (result == true)
+						interpDepth += 4;
 				}
 				}
 
