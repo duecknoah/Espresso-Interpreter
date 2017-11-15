@@ -4,10 +4,8 @@ public enum ESPStatement {
     INPUT, // gets user input and stores it in 'x' where 'read x'
     OUTPUT, // prints 'x' to the screen where 'x' in 'print x'
     ASSIGNMENT, // assigns a value or infix expression value to a variable
-    IF, // If statement
-    RUN, // jumps to the desired function 'x' using 'run x'
-    FUNCTION, // a function allows program to re-run a piece of code using 'function x'
-    RETURN; // exits a function and returns the value 'x' in 'return x'
+    IF; // If statement
+
     /**
      * Other Statement notes:
      * Comments:
@@ -39,21 +37,6 @@ public enum ESPStatement {
         }
         if (line.startsWith("if ")) {
             return IF;
-        }
-        if (line.startsWith("run ")) {
-            if (line.length() != 5)
-                throw new InvalidSyntaxException("Invalid syntax error for run statement");
-            return RUN;
-        }
-        if (line.startsWith("return ")) {
-            if (line.length() < 8)
-                throw new InvalidSyntaxException("Invalid syntax error for return statement");
-            return RETURN;
-        }
-        if (line.startsWith("func ")) {
-            if (line.length() != 6)
-                throw new InvalidSyntaxException("Invalid syntax error for function statement");
-            return FUNCTION;
         }
 
         // Since it wasn't a keyword, it must be an assignment statement.
