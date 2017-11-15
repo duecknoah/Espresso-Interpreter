@@ -4,6 +4,7 @@ public enum ESPStatement {
     INPUT, // gets user input and stores it in 'x' where 'read x'
     OUTPUT, // prints 'x' to the screen where 'x' in 'print x'
     ASSIGNMENT, // assigns a value or infix expression value to a variable
+    IF, // If statement
     RUN, // jumps to the desired function 'x' using 'run x'
     FUNCTION, // a function allows program to re-run a piece of code using 'function x'
     RETURN; // exits a function and returns the value 'x' in 'return x'
@@ -35,6 +36,9 @@ public enum ESPStatement {
             if (line.length() < 6)
                 throw new InvalidSyntaxException("Invalid syntax error for print statement");
             return OUTPUT;
+        }
+        if (line.startsWith("if ")) {
+            return IF;
         }
         if (line.startsWith("run ")) {
             if (line.length() != 5)

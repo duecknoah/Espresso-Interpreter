@@ -118,6 +118,13 @@ public class ESPInterpreter {
 					System.out.println(result);
 					break;
 				}
+				case IF: {
+					// ex. if ( x + 5 ) > 5
+					// runs the statements inside the if statement (lines that are tabbed in)
+					String statement = line.substring(3);
+					boolean result = Expression.evalInfixComparison(statement, variable_table);
+					System.out.println(result);
+				}
 				}
 
 				lineNum ++;

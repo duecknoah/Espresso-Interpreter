@@ -209,6 +209,82 @@ public final class Expression {
             throw new OperatorException("Invalid operator: " + operator);
         }
     }
+
+    /**
+     * Compares the two values with a comparison operator
+     * ex. val1 < val2
+     * @return the boolean result of the comparison
+     * 
+     * Valid comparison operators:
+     * = equal to
+     * < less than
+     * > greater than
+     */    
+    public static boolean compare(int val1, int val2, char comp) throws OperatorException {
+        switch(comp) {
+        case '=':
+            return val1 == val2;
+        case '<':
+            return val1 < val2;
+        case '>':
+            return val1 > val2;
+        default:
+            throw new OperatorException("Invalid comparison operator: " + comp);
+        }
+    }
+
+    /**
+     * Evaluates the two postfix expressions and compares the two with
+     * the comparison operator
+     * 
+     * Valid comparison operators:
+     * = equal to
+     * < less than
+     * > greater than
+     */
+    public static boolean comparePostfix(String postfix1, String postfix2, char comp, Variable[] variable_table) throws ESPException {
+        int val1 = Expression.evalPostfix(postfix1, variable_table);
+        int val2 = Expression.evalPostfix(postfix2, variable_table);
+
+        return compare(val1, val2, comp);
+    }
+
+    /**
+     * Evaluates two infix expressions based of the comparison operator between them
+     * ex. ( x + 5 ) < 5
+     * @return the result of the comparison as a boolean value 
+     */
+    public static boolean evalInfixComparison(String statement, Variable[] variable_table) throws ESPException {
+        // Find what index the comparison operator is at
+        int compIndex = -1;
+        for (int i = 0; i < statement.length(); i ++) {
+            if (statement.charAt(i) == '<' || statement.charAt(i) == '>' || statement.charAt(i) == '=') {
+                compIndex = i;
+                break;
+            }
+        }
+
+        if (compIndex == -1)
+            throw new InvalidSyntaxException("No comparison operator in if statement");
+        if (compIndex - 1 == 0 || compIndex + 1 >= statement.length())
+            throw new InvalidSyntaxException("Invalid placement for comparison operator");
+
+        // split both expressions where there is a comparison operator
+        String[] expressions = {
+            statement.substring(0, compIndex - 1),
+            statement.substring(compIndex + 2)
+        };
+        char comp = statement.charAt(compIndex);
+
+        System.out.println(expressions[0]);
+        System.out.println(expressions[1]);
+        System.out.println(comp);
+
+        // Evaluate
+        expressions[0] = Expression.convertToPostFix(expressions[0]);
+        expressions[1] = Expression.convertToPostFix(expressions[1]);
+        return Expression.comparePostfix(expressions[0], expressions[1], comp, variable_table);
+    }
     
 
     public static void main(String[] args) {
