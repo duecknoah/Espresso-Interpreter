@@ -1,0 +1,10 @@
+// Calculates the factorial of a number
+read x
+r = x
+
+if x > 1
+    x = x - 1
+    r = r * x
+    goto 5
+
+print r

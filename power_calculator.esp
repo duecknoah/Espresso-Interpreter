@@ -1,0 +1,15 @@
+// This program calculates x to the power of y
+// where x is the first input
+// where y is the second input
+read x
+read y
+
+// reset result
+p = 1
+if y > 0
+    p = p * x
+    y = y - 1
+    goto 9
+
+// Print the result of x ^ y
+print p

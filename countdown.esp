@@ -1,0 +1,13 @@
+read x
+y = x
+
+// Counts down from x->0, then x-1->0, ... until x is equal to 0
+if y > 0
+    y = y - 1
+
+    if x > 0
+        print x
+        x = x - 1
+        goto 8
+    x = y
+    goto 5
