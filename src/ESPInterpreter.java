@@ -94,14 +94,8 @@ public class ESPInterpreter {
 			while (lineNum < program.length) {
 				String line = program[lineNum];
 				ESPStatement lineType;
-				int lineDepth = 0;
-				// Calculate depth of line
-				for (int i = 0; i < line.length(); i ++) {
-					if (line.charAt(i) != ' ')
-						break;
-					lineDepth ++;
-				}
-
+				int lineDepth = getDepthOfLine(line);
+				
 				// If this line is lower depth than the interpreter,
 				// than we must be out of our current code block now
 				// so set our depth to the lines current depth
@@ -113,6 +107,9 @@ public class ESPInterpreter {
 					lineNum ++;
 					continue;
 				}
+
+				if (lineDepth % 4 != 0)
+					throw new InvalidSyntaxException("Invalid line depth " + lineDepth + ", use tabs.");
 
 				line = line.substring(interpDepth);
 				lineType = ESPStatement.getType(line);
@@ -162,6 +159,21 @@ public class ESPInterpreter {
 		finally {
 			userInput.close();
 		}
+	}
+
+	/**
+	 * Counts the amount of spaces (depth) the line has,
+	 * @return the total spaces before the line starts
+	 */
+	private int getDepthOfLine(String line) {
+		// Calculate depth of line
+		int lineDepth = 0;
+		for (int i = 0; i < line.length(); i ++) {
+			if (line.charAt(i) != ' ')
+				break;
+			lineDepth ++;
+		}
+		return lineDepth;
 	}
 
 	// Gets user input and sets it to the specified index in the variable table
