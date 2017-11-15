@@ -146,6 +146,16 @@ public class ESPInterpreter {
 					// If the IF statement came out to be true, go inside that code block
 					if (result == true)
 						interpDepth += 4;
+					break;
+				}
+				case GOTO: {
+					//ex. goto 2
+					// jumps from current point to that line number
+					String postfix = Expression.convertToPostFix(line.substring(5));
+					int result = Expression.evalPostfix(postfix, variable_table);
+					lineNum = result - 1; // minusing one as line 1 is stored as line[0]
+					lineDepth = getDepthOfLine(program[lineNum]);
+					continue;
 				}
 				}
 

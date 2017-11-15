@@ -4,7 +4,8 @@ public enum ESPStatement {
     INPUT, // gets user input and stores it in 'x' where 'read x'
     OUTPUT, // prints 'x' to the screen where 'x' in 'print x'
     ASSIGNMENT, // assigns a value or infix expression value to a variable
-    IF; // If statement
+    IF, // If statement
+    GOTO; // jumps to the given line number
 
     /**
      * Other Statement notes:
@@ -37,6 +38,9 @@ public enum ESPStatement {
         }
         if (line.startsWith("if ")) {
             return IF;
+        }
+        if (line.startsWith("goto ")) {
+            return GOTO;
         }
 
         // Since it wasn't a keyword, it must be an assignment statement.
