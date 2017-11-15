@@ -1,18 +1,15 @@
-// Calculates powers of x
+// This program calculates x to the power of y
+// where x is the first input
+// where y is the second input
 read x
-// y is the power to be calculated to
-// ex. x ^ y
 read y
-// when c is one, x's power will be calculated and stored in p
-c = 1
 
-if c = 1
-    // reset result
-    p = 1
-    if y > 0
-        p = p * x
-        y = y - 1
-        goto 12
+// reset result
+p = 1
+if y > 0
+    p = p * x
+    y = y - 1
+    goto 9
 
 // Print the result of x ^ y
 print p
