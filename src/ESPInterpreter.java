@@ -40,23 +40,6 @@ public class ESPInterpreter {
 			);
 		}
 	}
-	
-	/*
-	 * This is just a dummy method to show you how to use class 
-	 * Variable, set a value for a variable, and handle the exception
-	 * if tried to use an unknown variable
-	 */
-	public void ShowHowToUseVariableClass() {
-		char c = 'F';
-		variable_table[c].setValue(10);
-		
-		try {
-			int value = variable_table[c].getValue();
-			System.out.println("variable " +c +" is: " + value);
-		} catch (UndefinedVariableException e) {
-			System.out.println("error: variable " +c +" is not defined.");
-		}
-	}
 
 	// Loads the given file into the interpreter
 	public void load(File f) {
@@ -92,6 +75,12 @@ public class ESPInterpreter {
 		int interpDepth = 0; // the depth the interpreter is in the code (ex. a line with a tab is depth of 1)
 		try {
 			while (lineNum < program.length) {
+				/**
+				 * The three variables the interpreter uses is:
+				 * line - A string of the line at the current line number
+				 * lineType - the type of line detected, ex. ASSIGNMENT, OUTPUT, etc.
+				 * lineDepth - the amount of spaces the line has before code, 4 spaces = tab
+				 */
 				String line = program[lineNum];
 				ESPStatement lineType;
 				int lineDepth = getDepthOfLine(line);
@@ -193,7 +182,7 @@ public class ESPInterpreter {
 		
 		Variable v = variable_table[varIndex];
 		boolean isValid = false;
-		System.out.println("Enter an integer number for variable: ");
+		System.out.println("Enter an integer number for variable " + (char) varIndex + ": ");
 
 		// Loop until user entered a valid integer
 		while (!isValid) {

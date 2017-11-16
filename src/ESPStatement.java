@@ -32,8 +32,6 @@ public enum ESPStatement {
             return INPUT;
         }
         if (line.startsWith("print ")) {
-            if (line.length() < 6)
-                throw new InvalidSyntaxException("Invalid syntax error for print statement");
             return OUTPUT;
         }
         if (line.startsWith("if ")) {

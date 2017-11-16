@@ -3,7 +3,7 @@ import java.util.Stack;
 /**
  * The Expression class Does convertions from infix 
  * expressions to postfix.
- * It also can evaluate postfix expressions.
+ * It also can evaluate postfix expressions and comparisons.
  */
 public final class Expression {
 
