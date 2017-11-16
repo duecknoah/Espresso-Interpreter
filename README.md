@@ -2,7 +2,7 @@
 A Simple interpreter made as my assignment.
 
 ## Context
-This was done for an assignment in University. I had to make a simple interpreter that interpreted a made up programming language called "Espresso Language". In the end, it became a very basic scripting language interpreter. It had to follow the following:
+This was done for an assignment in University. I had to make a simple interpreter that interpreted a made up scripting language called "Espresso Language". In the end, it became a very basic scripting language interpreter. It had to follow the following:
 
 - The compiler takes a file (program file) and executes it line by line, so it is more like an interpreter, not a real compiler
 
