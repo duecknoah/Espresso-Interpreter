@@ -218,11 +218,16 @@ public class ESPInterpreter {
 
 	public static void main( String [ ] args ) {
 		// args[0] will be the name of input file, for example text.esp
-		System.out.println("The input file is " + args[0]);
-		ESPInterpreter interp = new ESPInterpreter();
-
-		interp.load(new File(args[0]));
-		interp.execute();
+		if (args.length == 0) {
+			System.out.println("Please specify a .esp file to be run as an argument");
+		}
+		else {
+			System.out.println("The input file is " + args[0]);
+			ESPInterpreter interp = new ESPInterpreter();
+	
+			interp.load(new File(args[0]));
+			interp.execute();
+		}
 		System.out.println("Done.");
 	}
 
