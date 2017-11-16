@@ -54,7 +54,7 @@ public final class Expression {
      * Converts the given prefix expression to postfix
      * @return a postfix expression of type String
      */
-    public static String convertToPostFix(String expression) throws VariableNameException, InvalidTokenException, ParenthesesException {
+    public static String convertToPostFix(String expression) throws VariableNameException, InvalidTokenException, ParenthesesException, UnaryOperatorException {
         Stack<Character> stack = new Stack<Character>();
         char[] expressionAsArray = expression.toCharArray();
         String output = "";
@@ -124,9 +124,13 @@ public final class Expression {
             i ++;
             if (i < expressionAsArray.length) {
                 // Verify that there is a space here
-                if (expressionAsArray[i] != ' ')
+                if (expressionAsArray[i] != ' ') {
+                    // If previous token was a '-', detect it as a unary operator, this is not allowed
+                    if (expressionAsArray[i - 1] == '-')
+                        throw new UnaryOperatorException("Unary operators not supported.");
                     throw new InvalidTokenException("Invalid token " + expressionAsArray[i]);
                 }
+            }
             i ++;
         }
 

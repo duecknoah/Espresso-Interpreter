@@ -1,3 +1,13 @@
+/**
+ * ESP Interpreter (Espresso Lang) programmed by Noah Dueck
+ * programs included:
+ * - sample1.esp
+ * - sample2.esp
+ * - sample3.esp
+ * - countdown.esp
+ * - factorial.esp
+ * - power_calculator.esp
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
