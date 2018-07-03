@@ -7,4 +7,7 @@ if x > 1
     r = r * x
     goto 5
 
+if r = 0
+    r = 1
+
 print r
